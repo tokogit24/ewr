@@ -3,6 +3,10 @@ pipeline {
   tools {
     maven 'M2_HOME'
   }
+  environment {
+    registry = "tokodocker2021/devop-pipeline"
+    registryCredential = 'DockerID'
+}
   stages {
     stage('Build'){
       steps {
@@ -18,15 +22,10 @@ pipeline {
       }
     }
      stage('Deploy'){
-      steps {
-      echo "deploy step"
-        sleep 10
+       steps {
+        script {
+        docker.build registry + ":$BUILD_NUMBER"
       }
-    }
-     stage('docker'){
-      steps {
-      echo "image step"
-        sleep 10
       }
     }
   }
